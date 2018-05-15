@@ -1,0 +1,20 @@
+---
+- name: Init base environment for all hosts
+  hosts: all
+  roles: 
+      - base
+
+- name: Install Mysql
+  hosts: mysql
+  roles: 
+      - mysql
+ 
+- name: Install Apache and PHP
+  hosts: apache
+  roles: 
+      - apache
+
+- name: Install Haproxy
+  hosts: haproxy
+  roles: 
+      - haproxy

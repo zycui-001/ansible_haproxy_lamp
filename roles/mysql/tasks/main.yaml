@@ -1,0 +1,29 @@
+---
+# - hosts: mysql
+#   tasks: 
+  - name: Install Mysql-server
+    yum: name={{ item }} state=installed
+    with_items:
+        - mysql-server
+
+  - name: Install Mysql-python
+    pip: name={{ item }} state=latest
+    with_items: 
+        - Mysql-python 
+      
+  - name: Copy my.cnf
+    template: src=my.cnf.j2 dest=/etc/my.cnf
+    notify: 
+        - Restart mysql
+    
+  - name: Satrt Mysql
+    service: name=mysqld state=started enabled=yes
+
+  - name: Create Database
+    mysql_db: name={{ database }} state=present
+
+  - name: Create Users
+    mysql_user: name={{ user }} password={{ password }} priv=*.*:ALL host='%' state=present
+
+ 
+  
